@@ -1,0 +1,20 @@
+{
+	"name": "Satoru Goju",
+	"symbol": "JJT",
+	"description": "Collection of Jujtsu Kaisen",
+	"image": "1.png",
+	"properties": {
+		"files": [
+			{
+				"uri": "1.png",
+				"type": "image/png"
+			}
+		],
+		"creators": [
+			{
+				"address": "5Yctuebt98KdsQn6j1SpX8Mni7VoV45gUHFWpaymXGjo",
+				"share": 100
+			}
+		]
+	}
+}
