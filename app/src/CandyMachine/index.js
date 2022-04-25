@@ -13,6 +13,7 @@ import {
 	getNetworkToken,
 	CIVIC,
 } from './helpers';
+import CountdownTimer from '../CountdownTimer';
 
 const { SystemProgram } = web3;
 const opts = {
@@ -24,7 +25,7 @@ const CandyMachine = ({ walletAddress }) => {
 
 	useEffect(() => {
 		getCandyMachineState();
-	});
+	}, []);
 
 	const getProvider = () => {
 		const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -387,14 +388,35 @@ const CandyMachine = ({ walletAddress }) => {
 		return [];
 	};
 
+	const renderDropTimer = () => {
+		const currentDate = new Date();
+		const dropDate = new Date(candyMachine.state.goLiveData * 1000);
+
+		if (currentDate < dropDate) {
+			console.log('Before drop date!');
+			return <CountdownTimer dropDate={dropDate} />;
+		}
+
+		return <p>{`Drop Date: ${candyMachine.state.goLiveDateTimeString}`}</p>;
+	};
+
 	return (
-		<div className="machine-container">
-			<p>{`Drop Date: ${candyMachine.state.goLiveDateTimeString}`}</p>
-			<p>{`Items Minted: ${candyMachine.state.itemsRedeemed} / ${candyMachine.state.itemsAvailable}`}</p>
-			<button className="cta-button mint-button" onClick={mintToken}>
-				Mint NFT
-			</button>
-		</div>
+		candyMachine &&
+		candyMachine.state && (
+			<div className="machine-container">
+				{renderDropTimer()}
+				<p>{`Drop Date: ${candyMachine.state.goLiveDateTimeString}`}</p>
+				<p>{`Items Minted: ${candyMachine.state.itemsRedeemed} / ${candyMachine.state.itemsAvailable}`}</p>
+				{candyMachine.state.itemsRedeemed ===
+				candyMachine.state.itemsAvailable ? (
+					<p className="sub-text">Sold Out 🙊</p>
+				) : (
+					<button className="cta-button mint-button" onClick={mintToken}>
+						Mint NFT
+					</button>
+				)}
+			</div>
+		)
 	);
 };
 
